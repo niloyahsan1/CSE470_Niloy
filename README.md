@@ -9,4 +9,6 @@
                                 
 - Selected Project: Diet Planner With Auto Assistant
 - Class Diagram link: [Click Here](https://drive.google.com/file/d/1QgBfZpLBS8HlZiCm6L0k2VN9W1ugvFCK/view?usp=drivesdk)
+- Project Link: [Click Here](Sprint3)
+- Project Video: [Click Here](https://youtu.be/B4-YheOwp70)
 ---
