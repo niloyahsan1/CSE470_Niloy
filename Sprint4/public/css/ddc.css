@@ -1,0 +1,49 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5)50%, rgba(0, 0, 0, 0.5)50%), url(../image/ddc.jpeg);
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+    overflow: hidden;
+}
+
+h1 {
+    color: white;
+    background-color: rgb(236, 134, 0);
+    margin-top: 50px;
+    margin-right: 60%;
+    margin-left: 2%;
+    padding: 0.5%;
+    text-shadow: 5px -3px 6px black;
+}
+
+
+table {
+    margin: 0 auto;
+    border: 2px solid black;
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 1000px;
+}
+
+
+th {
+    border: 2px solid black;
+    font-size: 20px;
+    padding: 10px;
+    background-color: rgb(236, 134, 0);
+    font-family: 'Courier New';
+    height: 40px;
+
+}
+
+td {
+    height: 30px;
+    border: 2px solid black;
+    padding: 8px;
+    background-color: rgb(234, 201, 154);
+    font-family: Arial;
+    text-align: center;
+}

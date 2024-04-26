@@ -1,0 +1,86 @@
+
+body {
+    margin: 0;
+    padding: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.5)50%,rgba(0,0,0,0.5)50%), url(../image/consult.jpg);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px;
+      width: 100%;
+      background-position: center;
+      background-size: cover;
+      height: 100vh;
+      overflow: hidden;
+    }
+  
+  .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 50px;
+      background-color: rgba(0, 0, 0, 0.475);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    
+  
+    h2 {
+      color: #ff7200;
+      font-size: 40px;
+      text-align: center;
+      text-shadow: 5px 5px 15px #000000;;
+    }
+    
+  
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #ffffff;
+      font-size: 25px;
+      font-weight: 600;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    
+    select {
+      padding: 10px;
+      font-size: 18px;
+      border: #ff7200;
+      border-radius: 5px;
+      width: 100%;
+      margin-bottom: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #000;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: 98%;
+    }
+    
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      margin-bottom: 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #000;
+    }
+    
+    button[type="submit"] {
+      padding: 10px 25px;
+      background-color: #ff7200;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 600;
+      text-transform: uppercase;
+      transition: background-color 0.3s ease-in-out;
+    }
+    
+    button[type="submit"]:hover {
+      background-color: #ff8900;
+    } 
+    

@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.5)50%, rgba(0, 0, 0, 0.5)50%), url(../image/profile.jpg);
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+    overflow: hidden;
+}
+
+header {
+    margin-top: 30px;
+    background-color: rgb(236, 134, 0);
+    ;
+    color: rgb(255, 255, 255);
+    padding: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+section {
+    flex: 1;
+    margin: 10px;
+    padding: 20px;
+    background-color: rgba(188, 186, 182, 0.892);
+    border-radius: 10px;
+}
+
+section h2 {
+    margin-top: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin-bottom: 10px;
+}
+
+ul li strong {
+    display: inline-block;
+    width: 100px;
+    font-weight: bold;
+}
+
+img {
+    max-width: 30%;
+    height: auto;
+    border-radius: 50%;
+    margin-top: 10px;
+    text-align: center;
+
+}
