@@ -1,0 +1,158 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    width: 100%;
+    background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.5) 50%,
+            rgba(0, 0, 0, 0.5) 50%
+        ),
+        url(../image/home.jpg);
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+}
+
+.charkona {
+    position: absolute;
+    top: 10%;
+    left: 40%;
+    width: 300px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 10px 10px 15px #ff7200;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.8) 50%,
+        rgba(0, 0, 0, 0.8) 50%
+    );
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* height: 100vh; */
+}
+
+.charkona h2 {
+    width: 220px;
+    font-family: sans-serif;
+    text-align: center;
+    color: #ff7200;
+    font-size: 22px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 8px;
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+
+.optt {
+    position: relative;
+    width: 100%;
+}
+
+.optt select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-family: "Times New Roman", Times, serif;
+    appearance: none; /* Remove default appearance */
+    background-color: #fff;
+    background-image: linear-gradient(45deg, transparent 50%, #ccc 50%),
+                        linear-gradient(135deg, #ccc 50%, transparent 50%);
+    background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+}
+
+.optt select:focus {
+    outline: none;
+    border-color: #ff7200;
+}
+
+/* Style the dropdown arrow */
+.optt select::-ms-expand {
+    display: none;
+}
+
+.charkona input{
+    width: 280px;
+    height: 35px;
+    background: transparent;
+    border-bottom: 1px solid #ff7200;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    color: #fff;
+    font-size: 15px;
+    letter-spacing: 1px;
+    margin-top: 30px;
+    font-family: sans-serif;
+}
+
+.charkona input:focus {
+    outline: none;
+}
+
+::placeholder {
+    color: #ffffff;
+    font-family: Arial;
+}
+
+.charkona .bttn {
+    width: 240px;
+    height: 40px;
+    background: #ff7200;
+    border: none;
+    margin-top: 30px;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #fff;
+    transition: 0.4s ease;
+}
+
+.charkona .bttn:hover {
+    background: #fff;
+    color: #ff7200;
+}
+
+.bttn a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+}
+
+.form .login {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.form .login a {
+    color: white;
+    text-decoration: none;
+    color: #ff7200;
+}
+
+.charkona .login {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.charkona .login a {
+    color: white;
+    text-decoration: none;
+    color: #ff7200;
+}
