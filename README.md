@@ -14,7 +14,7 @@ Healthy Habits is a comprehensive diet planning website designed to help users m
 ## Project Links
 - **Class Diagram**: [Class Diagram](Sprint2/Sprint2-Class_Diagram.jpg)
 - **Project**: [Project Link](Sprint3)
-- **Project Demonstration Video**: [Demonstration Video](https://youtu.be/B4-YheOwp70)
+- **Project Demonstration Video**: [Demonstration Video](https://youtu.be/nZsULlkXKiE)
 - **Unit Testing Video**: [Unit Testing Video](https://youtu.be/h6B6yakrHGQ)
 
 ## Functional Requirements
