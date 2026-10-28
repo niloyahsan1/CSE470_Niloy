@@ -18,9 +18,9 @@ class GoalController extends Controller
 
     public function showGoalForm(Request $request)
     {
-        $user = auth()->user();
+        $user = auth()->user() ?? Profile::where('email', $request->input('email'))->first();
         $email = $user ? $user->email : $request->input('email');
-        $profile = Profile::where('email', $email)->latest('id')->first();
+        $profile = ($user instanceof \App\Models\User) ? $user->profile : Profile::where('email', $email)->latest('id')->first();
         $age = $profile ? $profile->age : $request->input('age');
 
         return view('goal', ['email' => $email, 'age' => $age]);
@@ -32,10 +32,10 @@ class GoalController extends Controller
         $email = $user ? $user->email : $request->input('email');
         $goal = $request->input('weight');
 
-        Goal::create([
-            'email' => $email,
-            'weight' => $goal,
-        ]);
+        Goal::updateOrCreate(
+            ['email' => $email],
+            ['weight' => $goal]
+        );
 
         return redirect()->route('table');
     }
@@ -45,12 +45,12 @@ class GoalController extends Controller
         $user = auth()->user();
         $email = $user ? $user->email : $request->input('email');
 
-        $customer_info = Profile::where('email', $email)->latest('id')->first();
+        $customer_info = ($user && $user->profile) ? $user->profile : Profile::where('email', $email)->latest('id')->first();
         if (!$customer_info) {
             return redirect()->route('profile_show')->with('error', 'Please complete your profile first.');
         }
 
-        $goalRecord = Goal::where('email', $email)->latest('id')->first();
+        $goalRecord = ($user && $user->goal) ? $user->goal : Goal::where('email', $email)->latest('id')->first();
         $goal = $goalRecord ? $goalRecord->weight : null;
         $age = $customer_info->age;
 

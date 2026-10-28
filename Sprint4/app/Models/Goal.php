@@ -18,4 +18,9 @@ class Goal extends Model
         'email',
         'weight',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'email', 'email');
+    }
 }

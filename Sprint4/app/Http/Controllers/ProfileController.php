@@ -10,21 +10,22 @@ class ProfileController extends Controller
 {
     public function profile_done(Request $request)
     {
-        $user = auth()->user();
-        $email = $user ? $user->email : $request->input('email');
+        $user = auth()->user() ?? User::where('email', $request->input('email'))->first();
+        if (!$user) {
+            return redirect()->route('login');
+        }
 
-        $cuspro = Profile::where('email', $email)->latest('id')->first();
-        $cusinfo = $user ?? User::where('email', $email)->first();
+        $cuspro = $user->profile;
+        $cusinfo = $user;
 
         $age = $cuspro ? $cuspro->age : null;
-        $goalRecord = \App\Models\Goal::where('email', $email)->latest('id')->first();
-        $goal = $goalRecord ? $goalRecord->weight : null;
+        $goal = $user->goal ? $user->goal->weight : null;
 
         return view('profiledone', [
             'cuspro' => $cuspro,
             'cusinfo' => $cusinfo,
             'age' => $age,
-            'email' => $email,
+            'email' => $user->email,
             'goal' => $goal
         ]);
     }
@@ -37,19 +38,25 @@ class ProfileController extends Controller
     
     public function updateProfile(Request $request)
     {
-        $email = auth()->user() ? auth()->user()->email : $request->input('email');
-        $age = $request->input('age');
-        $gender = $request->input('gender');
-        $height = $request->input('height');
-        $current_weight = $request->input('current_weight');
+        $user = auth()->user();
+        $email = $user ? $user->email : $request->input('email');
 
-        Profile::create([
-            'email' => $email,
-            'age' => $age,
-            'height' => $height,
-            'current_weight' => $current_weight,
-            'gender' => $gender,
+        $validated = $request->validate([
+            'age' => ['required', 'string'],
+            'gender' => ['required', 'string'],
+            'height' => ['required', 'numeric'],
+            'current_weight' => ['required', 'numeric'],
         ]);
+
+        Profile::updateOrCreate(
+            ['email' => $email],
+            [
+                'age' => $validated['age'],
+                'height' => $validated['height'],
+                'current_weight' => $validated['current_weight'],
+                'gender' => $validated['gender'],
+            ]
+        );
 
         return redirect()->route('goal.show');
     }

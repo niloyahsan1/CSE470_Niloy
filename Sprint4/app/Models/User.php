@@ -32,4 +32,14 @@ class User extends Authenticatable
     {
         return $this->pass;
     }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'email', 'email');
+    }
+
+    public function goal()
+    {
+        return $this->hasOne(Goal::class, 'email', 'email');
+    }
 }
