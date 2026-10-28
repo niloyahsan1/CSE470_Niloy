@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use App\Models\Goal;
 use App\Models\Profile;
@@ -11,12 +13,9 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function auth(Request $request)
+    public function auth(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'pass' => ['required'],
-        ]);
+        $credentials = $request->validated();
 
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['pass']])) {
             $request->session()->regenerate();
@@ -51,16 +50,9 @@ class AuthController extends Controller
         return view('customer', ['age' => $age, 'email' => $email, 'goal' => $goal]);
     }
 
-    public function sign(Request $request)
+    public function sign(RegisterRequest $request)
     {
-        $validated = $request->validate([
-            'fname' => ['required', 'string', 'max:50'],
-            'lname' => ['nullable', 'string', 'max:50'],
-            'username' => ['required', 'string', 'max:50'],
-            'email' => ['required', 'email', 'max:50', 'unique:signup_table,email'],
-            'ptype' => ['required', 'string', 'in:Customer,Consultant'],
-            'pass' => ['required', 'string', 'min:6'],
-        ]);
+        $validated = $request->validated();
 
         $user = User::create([
             'fname' => $validated['fname'],

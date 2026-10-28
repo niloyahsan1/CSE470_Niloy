@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Http\Request;
@@ -36,17 +37,11 @@ class ProfileController extends Controller
         return view('profile', ['email' => $email]);
     }
     
-    public function updateProfile(Request $request)
+    public function updateProfile(UpdateProfileRequest $request)
     {
         $user = auth()->user();
         $email = $user ? $user->email : $request->input('email');
-
-        $validated = $request->validate([
-            'age' => ['required', 'string'],
-            'gender' => ['required', 'string'],
-            'height' => ['required', 'numeric'],
-            'current_weight' => ['required', 'numeric'],
-        ]);
+        $validated = $request->validated();
 
         Profile::updateOrCreate(
             ['email' => $email],

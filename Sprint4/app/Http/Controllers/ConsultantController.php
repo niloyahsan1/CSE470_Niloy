@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\BookAppointmentRequest;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 
@@ -16,14 +17,9 @@ class ConsultantController extends Controller
         return view('consultant', ['age' => $age, 'email' => $email, 'goal' => $goal]);
     }
     
-    public function appo(Request $request)
+    public function appo(BookAppointmentRequest $request)
     {
-        $validated = $request->validate([
-            'full_name' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'email', 'max:100'],
-            'phn' => ['required', 'string', 'max:20'],
-            'msg' => ['required', 'string', 'max:1000'],
-        ]);
+        $validated = $request->validated();
 
         $appointment = Appointment::create([
             'full_name' => $validated['full_name'],

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SetGoalRequest;
 use App\Models\Goal;
 use App\Models\Profile;
 use App\Services\BmiService;
@@ -26,12 +27,9 @@ class GoalController extends Controller
         return view('goal', ['email' => $email, 'age' => $age]);
     }
 
-    public function setGoal(Request $request)
+    public function setGoal(SetGoalRequest $request)
     {
-        $validated = $request->validate([
-            'weight' => ['required', 'string', 'in:Increase,Decrease'],
-        ]);
-
+        $validated = $request->validated();
         $user = auth()->user();
         $email = $user ? $user->email : $request->input('email');
 
