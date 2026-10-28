@@ -4,13 +4,13 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="{{ asset('css/consultant.css') }}">
-    <title>Appoinment</title>
+    <title>Appointment</title>
 </head>
 
 <body>
 @include('homebt')
 
-    <h2>Appoinment Form</h2>
+    <h2>Appointment Form</h2>
     <div class="container">
         <form class="" action="{{ route('appo') }}" method="post" autocomplete="off">
           @csrf
@@ -20,7 +20,7 @@
             <input type="text" name="email" id="email" required value=""> <br><br>
             <label for="phn">Enter Your Phone No</label>
             <input type="text" name="phn" id="phn" required value=""> <br><br>
-            <label for="msg">Enter Massage:</label>
+            <label for="msg">Enter Message:</label>
             <input type="text" name="msg" id="msg" required value=""> <br><br>
             <button type="submit" name="submit">Done</button>
 

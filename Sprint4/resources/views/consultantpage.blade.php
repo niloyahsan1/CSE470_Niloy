@@ -10,7 +10,7 @@
 </head>
 
 <body>    
-    <h1>Appoinment Message</h1>
+    <h1>Appointment Message</h1>
     <br>
     
     <table>
@@ -23,7 +23,7 @@
         </tr>
     
         @php
-            $chat = App\Models\UserAppo::all();
+            $chat = App\Models\Appointment::all();
         @endphp
     
         @foreach ($chat as $chat)

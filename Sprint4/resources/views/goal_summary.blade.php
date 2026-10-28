@@ -46,7 +46,7 @@
 
 
     <div class="btnnnn">
-        <button type="submit" name="submit" onclick="window.location='{{ route('notungoal', ['age'=>$age, 'email'=>$email, 'goal'=>$goal, 'do'=>$do]) }}'">UPDATE GOAL</button>
+        <button type="submit" name="submit" onclick="window.location='{{ route('notungoal') }}'">UPDATE GOAL</button>
     </div>
 <br><br><br>
 
