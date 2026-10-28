@@ -34,7 +34,7 @@ class DietTableController extends Controller
         $tableName = $suffix ? "{$prefix}{$suffix}" : null;
         $dietTableData = $tableName ? DB::table($tableName)->get() : collect();
 
-        return view('ddc', [
+        return view('diet_chart', [
             'dietTableData' => $dietTableData,
             'age' => $age,
             'email' => $email,

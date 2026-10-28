@@ -21,7 +21,7 @@ class ProfileController extends Controller
         $age = $cuspro ? $cuspro->age : null;
         $goal = $user->goal ? $user->goal->weight : null;
 
-        return view('profiledone', [
+        return view('profile_summary', [
             'cuspro' => $cuspro,
             'cusinfo' => $cusinfo,
             'age' => $age,

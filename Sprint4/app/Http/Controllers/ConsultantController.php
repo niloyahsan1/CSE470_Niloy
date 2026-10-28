@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserAppo;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 
 class ConsultantController extends Controller
@@ -23,17 +23,15 @@ class ConsultantController extends Controller
         $phn = $request->input('phn');
         $msg = $request->input('msg');
     
-        $user = UserAppo::create([
+        $appointment = Appointment::create([
             'full_name' => $full_name,
             'email' => $email,
             'phn' => $phn,
             'msg' => $msg,
         ]);
-    $userrr = UserAppo::where('msg', $msg)->first();
-    // return $userrr;
-    $c_no = $userrr->c_no;
 
-        return view('consappo', ['email' => $email, 'msg' => $msg, 'c_no' => $c_no]);
+        $c_no = $appointment->c_no ?? Appointment::where('msg', $msg)->value('c_no');
+
+        return view('consultant_appointment_confirmation', ['email' => $email, 'msg' => $msg, 'c_no' => $c_no]);
     }
-    
 }

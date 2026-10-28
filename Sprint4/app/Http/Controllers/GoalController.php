@@ -58,7 +58,7 @@ class GoalController extends Controller
         $show = $this->bmiService->getCategory($bmi);
         $do = $this->bmiService->getRecommendedAction($bmi);
 
-        return view('goaldone', [
+        return view('goal_summary', [
             'do' => $do,
             'show' => $show,
             'BMI' => round($bmi),
@@ -91,7 +91,7 @@ class GoalController extends Controller
             Goal::where('email', $email)->update(['weight' => $recommendedAction]);
         }
 
-        return view('goaldone', [
+        return view('goal_summary', [
             'goal' => $recommendedAction,
             'email' => $email,
             'age' => $age,

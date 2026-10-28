@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class UserAppo extends Model
+class Appointment extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
     public $timestamps = false;

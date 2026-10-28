@@ -50,7 +50,7 @@ Route::middleware('auth')->group(function () {
     // Diet Table
     Route::get('/diet-table', [DietTableController::class, 'showTable'])->name('table');
     Route::get('/ddctablee', function () {
-        return view('ddc');
+        return view('diet_chart');
     })->name('ddcshow');
 
     // Consultant Routes

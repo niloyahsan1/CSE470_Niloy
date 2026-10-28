@@ -37,7 +37,7 @@ class DailyActivityController extends Controller
 
         $activityTableData = DB::table($tableName)->get();
 
-        return view('da', [
+        return view('daily_activity', [
             'activityTableData' => $activityTableData,
             'show' => $show,
             'BMI' => round($bmi),
