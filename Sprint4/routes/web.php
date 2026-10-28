@@ -57,6 +57,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/consultant-dashboard', [ConsultantController::class, 'dashboard'])->name('consultant.dashboard');
     Route::get('/consultantform', [ConsultantController::class, 'showconsultantform'])->name('showconsultantform');
     Route::post('/consultantion', [ConsultantController::class, 'appo'])->name('appo');
+    Route::post('/consultant-reply/{c_no}', [ConsultantController::class, 'saveReply'])->name('consultant.reply');
+    Route::get('/my-messages', [ConsultantController::class, 'myMessages'])->name('my.messages');
 
     // Logout
     Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');

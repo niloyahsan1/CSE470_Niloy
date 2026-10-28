@@ -9,7 +9,6 @@
 
 
 <body>
-  {{-- {{ $email }} --}}
   <nav>
     <h2 class="logo">Healthy Habits</h2>
     <div class="wrapper">
@@ -18,6 +17,7 @@
         <li><a href="{{ route('dailyactivity') }}"><span>Daily Activities</span></a></li>
         <li><a href="{{ route('goaldekho') }}"><span>Goals</span></a></li>
         <li><a href="{{ route('showconsultantform') }}"><span>Consultant</span></a></li>
+        <li><a href="{{ route('my.messages') }}"><span>My Messages</span></a></li>
         <li><a href="{{ route('profile_done') }}"><span>My Profile</span></a></li>
         <li><a href="{{ route('logout') }}"><span>Logout</span></a></li>
       </ul>

@@ -21,5 +21,6 @@ class Appointment extends Model
         'email',
         'phn',
         'msg',
+        'consultant_reply',
     ];
 }
