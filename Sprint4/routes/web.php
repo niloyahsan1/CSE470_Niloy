@@ -1,79 +1,65 @@
 <?php
 
-use App\Http\Controllers\Consultant;
-use App\Http\Controllers\Home;
-use App\Http\Controllers\TEST;
-use App\Http\Controllers\loginauth;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConsultantController;
+use App\Http\Controllers\DailyActivityController;
+use App\Http\Controllers\DietTableController;
 use App\Http\Controllers\GoalController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DietTableController;
-use App\Http\Controllers\DailyActivityController;
+use Illuminate\Support\Facades\Route;
 
-// localhome route
+// Public Landing Page
 Route::get('/', function () {
     return view('local_home');
 });
 
-Route::match(['get', 'post'], '/login', function () {
+// Guest Authentication Routes
+Route::middleware('guest')->group(function () {
+    Route::get('/login', function () {
         return view('login');
     })->name('login');
-    
-    
-    
-// login route
-Route::get('/customer', [loginauth::class, 'show_home'])->name('home');
 
+    Route::post('/login', [AuthController::class, 'auth'])->name('loginauth');
 
+    Route::get('/signup', function () {
+        return view('signup');
+    })->name('signup-show');
 
-Route::match(['get', 'post'], '/loginauth', [loginauth::class, 'auth'])->name('loginauth');
+    Route::post('/signup', [AuthController::class, 'sign'])->name('usersignup');
+});
 
-Route::match(['get', 'post'], '/signup', function () {
-    return view('signup');
-})->name('signup-show');
+// Authenticated Routes
+Route::middleware('auth')->group(function () {
+    // Customer Dashboard
+    Route::get('/customer', [AuthController::class, 'show_home'])->name('home');
 
-Route::post('/signupaa', [loginauth::class, 'sign'])->name('usersignup');
+    // Profile Routes
+    Route::get('/profile', [ProfileController::class, 'showProfileForm'])->name('profile_show');
+    Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('profile_update');
+    Route::get('/UserProfile', [ProfileController::class, 'profile_done'])->name('profile_done');
 
+    // Goal Routes
+    Route::get('/goal', [GoalController::class, 'showGoalForm'])->name('goal.show');
+    Route::post('/goal', [GoalController::class, 'setGoal'])->name('goal.set');
+    Route::get('/goaldone', [GoalController::class, 'goaldone'])->name('goaldekho');
+    Route::get('/updatedone', [GoalController::class, 'notungoal'])->name('notungoal');
 
-// Profile Routes
-Route::get('/profile', [ProfileController::class, 'showProfileForm'])->name('profile_show');
-Route::post('/profile', [ProfileController::class, 'updateProfile'])->name('profile_update');
-Route::get('/UserProfile', [ProfileController::class, 'profile_done'])->name('profile_done');
+    // Daily Activity
+    Route::get('/dailyactivity', [DailyActivityController::class, 'dailyactivity'])->name('dailyactivity');
 
-// Goal Routes
-Route::get('/goal', [GoalController::class, 'showGoalForm'])->name('goal.show');
-Route::post('/goal', [GoalController::class, 'setGoal'])->name('goal.set');
+    // Diet Table
+    Route::get('/diet-table', [DietTableController::class, 'showTable'])->name('table');
+    Route::get('/ddctablee', function () {
+        return view('ddc');
+    })->name('ddcshow');
 
-// Goal done kore show korbee
-Route::get('/goaldone', [GoalController::class, 'goaldone'])->name('goaldekho');
+    // Consultant Routes
+    Route::get('/consultantform', [ConsultantController::class, 'showconsultantform'])->name('showconsultantform');
+    Route::post('/consultantion', [ConsultantController::class, 'appo'])->name('appo');
 
-// goal update korbee
-Route::get('/updatedone', [GoalController::class, 'notungoal'])->name('notungoal');
-
-
-// daily activity show er jonno
-Route::get('/dailyactivity', [DailyActivityController::class, 'dailyactivity'])->name('dailyactivity');
-
-
-// Diet Chart Show
-Route::get('/diet-table', [DietTableController::class, 'showTable'])->name('table');
-
-
-// coming the ddc table from customer honme pagfee
-Route::get('/ddctablee', function () {
-    return view('ddc');
-})->name('ddcshow');
-
-
-
-Route::get('/consultantform', [Consultant::class, 'showconsultantform'])->name('showconsultantform');
-Route::post('/consultantion', [Consultant::class, 'appo'])->name('appo');
-
-
-
-
-Route::match(['get', 'post'], '/logout', [loginauth::class, 'logout'])->name('logout');
+    // Logout
+    Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
+});
 
 
 

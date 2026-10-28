@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\UserAppo;
 use Illuminate\Http\Request;
 
-class Consultant extends Controller
+class ConsultantController extends Controller
 {
     public function showconsultantform(Request $request)
     {

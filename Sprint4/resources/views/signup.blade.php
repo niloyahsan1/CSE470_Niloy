@@ -36,7 +36,7 @@
     </form>
 
     <p class="login">Already Have an Account?<br>
-      <a href="{{ route('loginauth') }}">Login Here</a>
+      <a href="{{ route('login') }}">Login Here</a>
     </p>
 
   </div>
