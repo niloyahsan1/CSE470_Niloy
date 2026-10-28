@@ -28,13 +28,16 @@ class GoalController extends Controller
 
     public function setGoal(Request $request)
     {
+        $validated = $request->validate([
+            'weight' => ['required', 'string', 'in:Increase,Decrease'],
+        ]);
+
         $user = auth()->user();
         $email = $user ? $user->email : $request->input('email');
-        $goal = $request->input('weight');
 
         Goal::updateOrCreate(
             ['email' => $email],
-            ['weight' => $goal]
+            ['weight' => $validated['weight']]
         );
 
         return redirect()->route('table');
