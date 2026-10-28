@@ -6,72 +6,84 @@ use App\Models\User;
 use App\Models\Goal;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class loginauth extends Controller
 {
     public function auth(Request $request)
     {
-        $email = $request->input('email');
-        $pass = $request->input('pass');
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'pass' => ['required'],
+        ]);
 
-        $userInfo = User::where('email', $email)->first();
+        if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['pass']])) {
+            $request->session()->regenerate();
+            $user = Auth::user();
 
-        if ($userInfo) {
-            if ($pass == $userInfo -> pass) {
-                if ($userInfo->ptype == 'Customer') {
-                    return view('profile', ['email' => $email]);
-                } elseif ($userInfo->ptype == 'Consultant') {
-                    return view('consultant', ['email' => $email]);
-                }
-            } else {
-                return view('login');
+            if ($user->ptype === 'Customer') {
+                return redirect()->route('profile_show');
+            } elseif ($user->ptype === 'Consultant') {
+                return view('consultant', ['email' => $user->email]);
             }
         }
-        return view('login');
 
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
     }
 
     public function show_home(Request $request)
     {
-        $email = $request->only('email');
-        $age = $request->only('age');
-        $goal = $request->only('goal');
-        // return $age;
-        
+        $user = Auth::user();
+        $email = $user ? $user->email : $request->query('email');
+
         $GoalInfo = Goal::where('email', $email)->first();
-        $goal = $GoalInfo->weight;
-        
+        $goal = $GoalInfo ? $GoalInfo->weight : null;
+
         $ProfileInfo = Profile::where('email', $email)->first();
-        $age = $ProfileInfo->age;
+        $age = $ProfileInfo ? $ProfileInfo->age : null;
 
         return view('customer', ['age' => $age, 'email' => $email, 'goal' => $goal]);
     }
 
-
-
     public function sign(Request $request)
     {
-        $fname = $request->input('fname');
-        $lname = $request->input('lname');
-        $username = $request->input('username');
-        $email = $request->input('email');
-        $ptype = $request->input('ptype');
-        $pass = $request->input('pass');
-
-
-        $userInfo = User::create([
-            'fname' => $fname,
-            'lname' => $lname,
-            'username' => $username,
-            'email' => $email,
-            'ptype' => $ptype,
-            'pass' => $pass,
+        $validated = $request->validate([
+            'fname' => ['required', 'string', 'max:50'],
+            'lname' => ['nullable', 'string', 'max:50'],
+            'username' => ['required', 'string', 'max:50'],
+            'email' => ['required', 'email', 'max:50', 'unique:signup_table,email'],
+            'ptype' => ['required', 'string', 'in:Customer,Consultant'],
+            'pass' => ['required', 'string', 'min:6'],
         ]);
-        if ($ptype == "Customer"){
-            return redirect()->route('profile_show', ['email' => $email]);
+
+        $user = User::create([
+            'fname' => $validated['fname'],
+            'lname' => $validated['lname'] ?? '',
+            'username' => $validated['username'],
+            'email' => $validated['email'],
+            'ptype' => $validated['ptype'],
+            'pass' => Hash::make($validated['pass']),
+        ]);
+
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        if ($user->ptype === 'Customer') {
+            return redirect()->route('profile_show');
+        } else {
+            return view('consultantpage', ['email' => $user->email]);
         }
-        else{
-            return view('consultantpage', ['email' => $email]);
-        }
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 }

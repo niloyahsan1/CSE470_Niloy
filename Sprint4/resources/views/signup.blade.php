@@ -11,6 +11,11 @@
 <body>
   <div class="charkona">
     <h2>Signup Here</h2>
+    @if ($errors->any())
+      <div style="color: red; margin-bottom: 10px; font-size: 14px;">
+        {{ $errors->first() }}
+      </div>
+    @endif
     <form class="" action="{{ route('usersignup') }}" method="post" autocomplete="off">
       @csrf
       <input type="text" name="fname" id="fname" required value="" placeholder="Enter Your First Name">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Goal;
+use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,11 +21,15 @@ class GoalController extends Controller
 
     public function setGoal(Request $request)
     {
+        // Validate the form data here as needed
 
         $email = $request->only('email');
         $age = $request->only('age');
+        // return $age;
 
+        // $user = auth()->user();
         $goal = $request->input('weight');
+        // $user->save();
 
         $user = Goal::create([
             'email' => $email['email'],

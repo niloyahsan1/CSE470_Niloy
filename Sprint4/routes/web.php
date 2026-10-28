@@ -73,9 +73,7 @@ Route::post('/consultantion', [Consultant::class, 'appo'])->name('appo');
 
 
 
-Route::get('/localhome', function () {
-    return view('local_home');
-})->name('logout');
+Route::match(['get', 'post'], '/logout', [loginauth::class, 'logout'])->name('logout');
 
 
 

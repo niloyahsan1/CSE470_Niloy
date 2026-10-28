@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('username', 50);
             $table->string('email', 50);
             $table->string('ptype', 50);
-            $table->string('pass', 250);
+            $table->string('pass', 255);
         });
     }
 

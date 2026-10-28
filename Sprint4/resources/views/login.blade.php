@@ -12,6 +12,11 @@
 
   <div class=form>
     <h2>Login</h2>
+    @if ($errors->any())
+      <div style="color: red; margin-bottom: 10px; font-size: 14px;">
+        {{ $errors->first() }}
+      </div>
+    @endif
     <form class="" action="{{ route('loginauth') }}" method="post" autocomplete="off">
       @csrf
       <input type="text" name="email" id="email" placeholder="Enter Email Here">

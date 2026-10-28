@@ -23,4 +23,13 @@ class User extends Authenticatable
         'ptype',
         'pass',
     ];
+
+    protected $hidden = [
+        'pass',
+    ];
+
+    public function getAuthPassword()
+    {
+        return $this->pass;
+    }
 }
