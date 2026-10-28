@@ -7,50 +7,32 @@ use Illuminate\Support\Facades\DB;
 
 class DietTableController extends Controller
 {
+    private const AGE_TABLE_MAP = [
+        '10 - 16' => '1',
+        '17 - 20' => '2',
+        '21 - 26' => '3',
+        '27 - 35' => '4',
+        '36 - 45' => '5',
+        '46 - 55' => '7',
+        '56 - 70' => '8',
+    ];
+
     public function showTable(Request $request)
     {
         $user = auth()->user();
         $email = $user ? $user->email : $request->input('email');
 
-        $profile = \App\Models\Profile::where('email', $email)->latest('id')->first();
-        $goalRecord = \App\Models\Goal::where('email', $email)->latest('id')->first();
+        $profile = ($user && $user->profile) ? $user->profile : \App\Models\Profile::where('email', $email)->latest('id')->first();
+        $goalRecord = ($user && $user->goal) ? $user->goal : \App\Models\Goal::where('email', $email)->latest('id')->first();
 
         $age = $profile ? $profile->age : $request->input('age');
         $weightGoal = $goalRecord ? $goalRecord->weight : $request->input('weight');
 
-        // fallback if not found
-        $dietTableData = collect();
+        $prefix = ($weightGoal === 'Increase') ? 'inc_diet_table' : 'dec_diet_table';
+        $suffix = self::AGE_TABLE_MAP[$age] ?? null;
 
-        // getting the table
-        if ($weightGoal == 'Decrease' && $age == '10 - 16') {
-            $dietTableData = DB::table('dec_diet_table1')->get();
-        } elseif ($weightGoal == 'Decrease' && $age == '17 - 20') {
-            $dietTableData = DB::table('dec_diet_table2')->get();
-        } elseif ($weightGoal == 'Decrease' && $age == '21 - 26') {
-            $dietTableData = DB::table('dec_diet_table3')->get();
-        } elseif ($weightGoal == 'Decrease' && $age == '27 - 35') {
-            $dietTableData = DB::table('dec_diet_table4')->get();
-        } elseif ($weightGoal == 'Decrease' && $age == '36 - 45') {
-            $dietTableData = DB::table('dec_diet_table5')->get();
-        } elseif ($weightGoal == 'Decrease' && $age == '46 - 55') {
-            $dietTableData = DB::table('dec_diet_table7')->get();
-        } elseif ($weightGoal == 'Decrease' && $age == '56 - 70') {
-            $dietTableData = DB::table('dec_diet_table8')->get();
-        } elseif ($weightGoal == 'Increase' && $age == '10 - 16') {
-            $dietTableData = DB::table('inc_diet_table1')->get();
-        } elseif ($weightGoal == 'Increase' && $age == '17 - 20') {
-            $dietTableData = DB::table('inc_diet_table2')->get();
-        } elseif ($weightGoal == 'Increase' && $age == '21 - 26') {
-            $dietTableData = DB::table('inc_diet_table3')->get();
-        } elseif ($weightGoal == 'Increase' && $age == '27 - 35') {
-            $dietTableData = DB::table('inc_diet_table4')->get();
-        } elseif ($weightGoal == 'Increase' && $age == '36 - 45') {
-            $dietTableData = DB::table('inc_diet_table5')->get();
-        } elseif ($weightGoal == 'Increase' && $age == '46 - 55') {
-            $dietTableData = DB::table('inc_diet_table7')->get();
-        } elseif ($weightGoal == 'Increase' && $age == '56 - 70') {
-            $dietTableData = DB::table('inc_diet_table8')->get();
-        }
+        $tableName = $suffix ? "{$prefix}{$suffix}" : null;
+        $dietTableData = $tableName ? DB::table($tableName)->get() : collect();
 
         return view('ddc', [
             'dietTableData' => $dietTableData,
