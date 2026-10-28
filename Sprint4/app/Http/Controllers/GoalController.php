@@ -3,13 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Goal;
-use App\Models\User;
 use App\Models\Profile;
+use App\Services\BmiService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class GoalController extends Controller
 {
+    protected BmiService $bmiService;
+
+    public function __construct(BmiService $bmiService)
+    {
+        $this->bmiService = $bmiService;
+    }
+
     public function showGoalForm(Request $request)
     {
         $user = auth()->user();
@@ -39,7 +45,6 @@ class GoalController extends Controller
         $user = auth()->user();
         $email = $user ? $user->email : $request->input('email');
 
-        //getting the email and do query
         $customer_info = Profile::where('email', $email)->latest('id')->first();
         if (!$customer_info) {
             return redirect()->route('profile_show')->with('error', 'Please complete your profile first.');
@@ -48,81 +53,51 @@ class GoalController extends Controller
         $goalRecord = Goal::where('email', $email)->latest('id')->first();
         $goal = $goalRecord ? $goalRecord->weight : null;
         $age = $customer_info->age;
-        $hh = $customer_info->height;
-        $h = $hh * 0.0254;
-        $w = $customer_info->current_weight;
-        $b = $w / ($h * $h);
-        $BMI = round($b);
 
-        if ($BMI < 18) {
-            $show = "Underweight";
-        } elseif (18 <= $BMI and $BMI <= 25) {
-            $show = "Normal Weight";
-        } elseif (26 <= $BMI and $BMI <= 30) {
-            $show = "Overweight";
-        } elseif (31 <= $BMI and $BMI <= 35) {
-            $show = "Obese";
-        } elseif (36 <= $BMI) {
-            $show = "Extremely Obese";
-        }
+        $bmi = $this->bmiService->calculate($customer_info->height, $customer_info->current_weight);
+        $show = $this->bmiService->getCategory($bmi);
+        $do = $this->bmiService->getRecommendedAction($bmi);
 
-
-        if ($BMI < 18) {
-            $do = "Increase";
-        } elseif ($BMI > 26) {
-            $do = "Decrease";
-        } else {
-            $do = "Nothing";
-        }
-        
-        return view('goaldone', ['do' => $do, 'show' => $show, 'BMI' => $BMI, 'age' => $age['age'], 'email' => $email['email'], 'goal' => $goal['weight']]);
+        return view('goaldone', [
+            'do' => $do,
+            'show' => $show,
+            'BMI' => round($bmi),
+            'age' => $age,
+            'email' => $email,
+            'goal' => $goal
+        ]);
     }
-    
+
     public function notungoal(Request $request)
     {
-        
-        $email = $request->only('email');
-        $age = $request->only('age');
-        $goal = $request->only('goal');
-        $do = $request->only('do');
+        $user = auth()->user();
+        $email = $user ? $user->email : $request->input('email');
 
-    // -------------------------------------------------------------------------------------
-        $customer_info = Profile::where('email', $email)->first();
-        $hh = $customer_info->height;
-        $h = $hh * 0.0254;
-        $w = $customer_info->current_weight;
-        $b = $w / ($h * $h);
-        $BMI = round($b);
-
-        if ($BMI < 18) {
-            $show = "Underweight";
-        } elseif (18 <= $BMI and $BMI <= 25) {
-            $show = "Normal Weight";
-        } elseif (26 <= $BMI and $BMI <= 30) {
-            $show = "Overweight";
-        } elseif (31 <= $BMI and $BMI <= 35) {
-            $show = "Obese";
-        } elseif (36 <= $BMI) {
-            $show = "Extremely Obese";
+        $customer_info = Profile::where('email', $email)->latest('id')->first();
+        if (!$customer_info) {
+            return redirect()->route('profile_show')->with('error', 'Please complete your profile first.');
         }
 
+        $goalRecord = Goal::where('email', $email)->latest('id')->first();
+        $currentGoal = $goalRecord ? $goalRecord->weight : $request->input('goal');
+        $age = $customer_info->age;
 
-        if ($BMI < 18) {
-            $do = "Increase";
-        } elseif ($BMI > 26) {
-            $do = "Decrease";
-        } else {
-            $do = "Nothing";
-        }
-    // -----------------------------------------------------------------------------
+        $bmi = $this->bmiService->calculate($customer_info->height, $customer_info->current_weight);
+        $show = $this->bmiService->getCategory($bmi);
+        $recommendedAction = $this->bmiService->getRecommendedAction($bmi);
 
-        if ($goal['goal'] == 'Increase' && $do == 'Decrease') {
-            Goal::where('email', $email)->update(['weight' => $do]);
-
-        } elseif ($goal['goal'] == 'Decrease' && $do == 'Increase') {
-            Goal::where('email', $email)->update(['weight' => $do]);
+        if (($currentGoal === 'Increase' && $recommendedAction === 'Decrease') ||
+            ($currentGoal === 'Decrease' && $recommendedAction === 'Increase')) {
+            Goal::where('email', $email)->update(['weight' => $recommendedAction]);
         }
 
-        return view('goaldone', ['goal' => $do, 'email' => $email['email'], 'age' => $age['age'], 'BMI' => $BMI, 'show' => $show, 'do' => 'Nothing']);
+        return view('goaldone', [
+            'goal' => $recommendedAction,
+            'email' => $email,
+            'age' => $age,
+            'BMI' => round($bmi),
+            'show' => $show,
+            'do' => 'Nothing'
+        ]);
     }
 }
