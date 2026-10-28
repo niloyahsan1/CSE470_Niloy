@@ -28,6 +28,16 @@ class User extends Authenticatable
         'pass',
     ];
 
+    public function getPasswordAttribute()
+    {
+        return $this->pass;
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['pass'] = $value;
+    }
+
     public function getAuthPassword()
     {
         return $this->pass;

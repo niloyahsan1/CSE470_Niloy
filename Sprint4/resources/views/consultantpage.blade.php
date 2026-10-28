@@ -10,7 +10,7 @@
 </head>
 
 <body>    
-    <h1>Appointment Message</h1>
+    <h1>Appointment Messages</h1>
     <br>
     
     <table>
@@ -22,26 +22,19 @@
             <th>Action</th>
         </tr>
     
-        @php
-            $chat = App\Models\Appointment::all();
-        @endphp
-    
-        @foreach ($chat as $chat)
+        @foreach ($appointments as $appointment)
             <tr>
-                <td>{{ $chat->c_no }}</td>
-                <td>{{ $chat->full_name }}</td>
-                <td>{{ $chat->msg }}</td>
+                <td>{{ $appointment->c_no }}</td>
+                <td>{{ $appointment->full_name }}</td>
+                <td>{{ $appointment->msg }}</td>
                 <td>
-                    <input type="text" name="consultant_reply[]" value="{{ $chat->consultant_reply ?? '' }}">
+                    <input type="text" name="consultant_reply[]" value="{{ $appointment->consultant_reply ?? '' }}">
                 </td>
                 <td>
-                    <button type="button" onclick="updateReply({{ $chat->c_no }})">Update</button>
+                    <button type="button" onclick="updateReply({{ $appointment->c_no }})">Update</button>
                 </td>
             </tr>
         @endforeach
-    </table>
-    
-
     </table>
 </body>
 

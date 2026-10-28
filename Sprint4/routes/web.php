@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
     })->name('ddcshow');
 
     // Consultant Routes
+    Route::get('/consultant-dashboard', [ConsultantController::class, 'dashboard'])->name('consultant.dashboard');
     Route::get('/consultantform', [ConsultantController::class, 'showconsultantform'])->name('showconsultantform');
     Route::post('/consultantion', [ConsultantController::class, 'appo'])->name('appo');
 

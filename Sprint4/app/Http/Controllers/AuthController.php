@@ -24,7 +24,7 @@ class AuthController extends Controller
             if ($user->ptype === 'Customer') {
                 return redirect()->route('home');
             } elseif ($user->ptype === 'Consultant') {
-                return view('consultant', ['email' => $user->email]);
+                return redirect()->route('consultant.dashboard');
             }
         }
 
@@ -69,7 +69,7 @@ class AuthController extends Controller
         if ($user->ptype === 'Customer') {
             return redirect()->route('profile_show');
         } else {
-            return view('consultantpage', ['email' => $user->email]);
+            return redirect()->route('consultant.dashboard');
         }
     }
 

@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class ConsultantController extends Controller
 {
+    public function dashboard()
+    {
+        $appointments = Appointment::all();
+        return view('consultantpage', ['appointments' => $appointments]);
+    }
+
     public function showconsultantform(Request $request)
     {
         $email = $request->input('email');
