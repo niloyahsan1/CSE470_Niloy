@@ -13,6 +13,7 @@ class Appointment extends Model
     public $timestamps = false;
 
     protected $table = 'user_appo';
+    protected $primaryKey = 'c_no';
 
     protected $fillable = [
         'c_no',
@@ -20,6 +21,5 @@ class Appointment extends Model
         'email',
         'phn',
         'msg',
-
     ];
 }
