@@ -14,11 +14,11 @@
     <h2 class="logo">Healthy Habits</h2>
     <div class="wrapper">
       <ul>
-        <li><a href="{{ route('table',['age'=>$age, 'email'=>$email, 'weight'=>$goal]) }}"><span>Daily Diet Chart</span></a></li>
-        <li><a href="{{ route('dailyactivity',['age'=>$age, 'email'=>$email, 'weight'=>$goal]) }}"><span>Daily Activities</span></a></li>
-        <li><a href="{{ route('goaldekho', ['age'=>$age, 'email'=>$email, 'weight'=>$goal]) }}"><span>Goals</span></a></li>
-        <li><a href="{{ route('showconsultantform', ['age'=>$age, 'email'=>$email, 'weight'=>$goal]) }}"><span>Consultant</span></a></li>
-        <li><a href="{{ route('profile_done', ['age'=>$age, 'email'=>$email, 'weight'=>$goal]) }}"><span>My Profile</span></a></li>
+        <li><a href="{{ route('table') }}"><span>Daily Diet Chart</span></a></li>
+        <li><a href="{{ route('dailyactivity') }}"><span>Daily Activities</span></a></li>
+        <li><a href="{{ route('goaldekho') }}"><span>Goals</span></a></li>
+        <li><a href="{{ route('showconsultantform') }}"><span>Consultant</span></a></li>
+        <li><a href="{{ route('profile_done') }}"><span>My Profile</span></a></li>
         <li><a href="{{ route('logout') }}"><span>Logout</span></a></li>
       </ul>
     </div>

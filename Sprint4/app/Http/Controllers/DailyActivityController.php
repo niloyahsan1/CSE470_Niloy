@@ -10,16 +10,23 @@ class DailyActivityController extends Controller
 {
     public function dailyactivity(Request $request)
     {
-        $email = $request->only('email');
-        $age = $request->only('age');
-        $goal = $request->only('weight');
+        $user = auth()->user();
+        $email = $user ? $user->email : $request->input('email');
+
+        $customer_info = Profile::where('email', $email)->latest('id')->first();
+        if (!$customer_info) {
+            return redirect()->route('profile_show')->with('error', 'Please complete your profile first.');
+        }
+
+        $goalRecord = \App\Models\Goal::where('email', $email)->latest('id')->first();
+        $goal = $goalRecord ? $goalRecord->weight : $request->input('weight');
+        $age = $customer_info->age;
 
         //getting the email and do query
-        $customer_info = Profile::where('email', $email)->first();
         $hh = $customer_info->height;
         $h = $hh * 0.0254;
         $w = $customer_info->current_weight;
-        $b = $w / ($h * $h);
+        $b = $h > 0 ? ($w / ($h * $h)) : 0;
         $BMI = round($b);
 
         if ($BMI < 18) {
@@ -43,6 +50,13 @@ class DailyActivityController extends Controller
             $activityTableData = DB::table('bmi_norm')->get();
         }
 
-        return view('da', ['activityTableData' => $activityTableData, 'show' => $show, 'BMI' => $BMI, 'age' => $age['age'], 'email' => $email['email'], 'goal' => $goal['weight']]);
+        return view('da', [
+            'activityTableData' => $activityTableData,
+            'show' => $show,
+            'BMI' => $BMI,
+            'age' => $age,
+            'email' => $email,
+            'goal' => $goal
+        ]);
     }
 }

@@ -23,7 +23,7 @@ class loginauth extends Controller
             $user = Auth::user();
 
             if ($user->ptype === 'Customer') {
-                return redirect()->route('profile_show');
+                return redirect()->route('home');
             } elseif ($user->ptype === 'Consultant') {
                 return view('consultant', ['email' => $user->email]);
             }
@@ -37,12 +37,15 @@ class loginauth extends Controller
     public function show_home(Request $request)
     {
         $user = Auth::user();
-        $email = $user ? $user->email : $request->query('email');
+        if (!$user) {
+            return redirect()->route('login');
+        }
 
-        $GoalInfo = Goal::where('email', $email)->first();
+        $email = $user->email;
+        $GoalInfo = Goal::where('email', $email)->latest('id')->first();
         $goal = $GoalInfo ? $GoalInfo->weight : null;
 
-        $ProfileInfo = Profile::where('email', $email)->first();
+        $ProfileInfo = Profile::where('email', $email)->latest('id')->first();
         $age = $ProfileInfo ? $ProfileInfo->age : null;
 
         return view('customer', ['age' => $age, 'email' => $email, 'goal' => $goal]);

@@ -12,42 +12,42 @@ class GoalController extends Controller
 {
     public function showGoalForm(Request $request)
     {
-        $email = $request->only('email');
-        $age = $request->only('age');
+        $user = auth()->user();
+        $email = $user ? $user->email : $request->input('email');
+        $profile = Profile::where('email', $email)->latest('id')->first();
+        $age = $profile ? $profile->age : $request->input('age');
 
-        // return $email;
-        return view('goal', ['email' => $email['email'], 'age' => $age['age']]);
+        return view('goal', ['email' => $email, 'age' => $age]);
     }
 
     public function setGoal(Request $request)
     {
-        // Validate the form data here as needed
-
-        $email = $request->only('email');
-        $age = $request->only('age');
-        // return $age;
-
-        // $user = auth()->user();
+        $user = auth()->user();
+        $email = $user ? $user->email : $request->input('email');
         $goal = $request->input('weight');
-        // $user->save();
 
-        $user = Goal::create([
-            'email' => $email['email'],
+        Goal::create([
+            'email' => $email,
             'weight' => $goal,
         ]);
 
-        // Optionally, you can redirect to another page or show a success message
-        return redirect()->route('table', ['weight' => $goal, 'email' => $email['email'], 'age' => $age['age']]);
+        return redirect()->route('table');
     }
 
     public function goaldone(Request $request)
     {
-        $email = $request->only('email');
-        $age = $request->only('age');
-        $goal = $request->only('weight');
+        $user = auth()->user();
+        $email = $user ? $user->email : $request->input('email');
 
         //getting the email and do query
-        $customer_info = Profile::where('email', $email)->first();
+        $customer_info = Profile::where('email', $email)->latest('id')->first();
+        if (!$customer_info) {
+            return redirect()->route('profile_show')->with('error', 'Please complete your profile first.');
+        }
+
+        $goalRecord = Goal::where('email', $email)->latest('id')->first();
+        $goal = $goalRecord ? $goalRecord->weight : null;
+        $age = $customer_info->age;
         $hh = $customer_info->height;
         $h = $hh * 0.0254;
         $w = $customer_info->current_weight;
